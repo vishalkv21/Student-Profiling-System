@@ -1,0 +1,83 @@
+body {
+  background: #f4f6f9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: .4px;
+}
+
+.card {
+  border: 1px solid #e1e5eb;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
+}
+
+.metric-card {
+  border-left: 4px solid #0d6efd;
+}
+
+.section-title {
+  font-weight: 700;
+}
+
+.small-muted {
+  font-size: .86rem;
+  color: #6c757d;
+}
+
+.required::after {
+  content: " *";
+  color: #dc3545;
+}
+
+.dynamic-row {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: .5rem;
+  padding: .75rem;
+  margin-bottom: .75rem;
+}
+
+.dashboard-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.badge-soft {
+  background: #eef2f7;
+  color: #344054;
+}
+
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+}
+
+.form-section {
+  margin-bottom: 1.5rem;
+}
+
+.modal-body {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+textarea {
+  min-height: 90px;
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Academic Personal & Career Profiling System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-wrap">
+  <div class="card login-card p-4">
+    <h3 class="text-center mb-2">Student Profiling System Login</h3>
+    <p class="text-center text-muted">Student Academic Personal & Career Profiling System</p>
+
+    <div id="loginAlert" class="alert alert-danger d-none"></div>
+
+    <form id="loginForm">
+      <div class="mb-3">
+        <label class="form-label required">Login As</label>
+        <select id="loginRole" class="form-select" required>
+          <option value="faculty">Faculty / Admin</option>
+          <option value="student">Student</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label required">Username / Register Number</label>
+        <input id="loginUsername" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label required">Password</label>
+        <input id="loginPassword" type="password" class="form-control" required>
+      </div>
+      <button class="btn btn-primary w-100">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- STUDENT SELF-SERVICE -->
+<div id="studentScreen" class="d-none">
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <span class="navbar-brand">Student Self-Service Portal</span>
+      <div class="d-flex align-items-center gap-2">
+        <span class="navbar-text text-white" id="studentLoggedInUser"></span>
+        <button class="btn btn-light btn-sm" id="studentLogoutBtn">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid px-3 px-lg-4 my-4">
+    <div id="studentAlert" class="alert d-none"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <h3 class="section-title mb-1">My Academic, Personal & Career Profile</h3>
+        <div class="small-muted">You can update your self-entered information. Academic results and arrears are controlled by faculty.</div>
+      </div>
+      <button class="btn btn-outline-primary" id="studentReloadBtn">Reload</button>
+    </div>
+
+    <div class="card p-3 mb-4">
+      <h5>Academic Information — Read Only</h5>
+      <div id="studentAcademicSummary"></div>
+    </div>
+
+    <form id="studentSelfForm">
+      <div class="card p-3 form-section">
+        <h5>1. Personal Information</h5>
+        <div class="row g-3">
+          <div class="col-md-3"><label class="form-label">Register Number</label><input id="selfRegisterNumber" class="form-control" disabled></div>
+          <div class="col-md-5"><label class="form-label">Name</label><input id="selfStudentName" class="form-control" required></div>
+          <div class="col-md-2"><label class="form-label">Date of Birth</label><input id="selfDob" type="date" class="form-control" required></div>
+          <div class="col-md-2"><label class="form-label">Gender</label><input id="selfGender" class="form-control" required></div>
+          <div class="col-md-4"><label class="form-label">Department</label><input id="selfDepartment" class="form-control" disabled></div>
+          <div class="col-md-2"><label class="form-label">Section</label><input id="selfSection" class="form-control" disabled></div>
+          <div class="col-md-4"><label class="form-label">Institutional Email</label><input id="selfInstitutionalEmail" class="form-control" disabled></div>
+          <div class="col-md-4"><label class="form-label">Personal Email</label><input id="selfPersonalEmail" type="email" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Mobile</label><input id="selfMobileNumber" class="form-control"></div>
+          <div class="col-md-8"><label class="form-label">Residential Address</label><textarea id="selfResidentialAddress" class="form-control"></textarea></div>
+          <div class="col-md-4"><label class="form-label">Student Category</label><select id="selfStudentCategory" class="form-select"><option>Hosteller</option><option>Day Scholar</option></select></div>
+          <div class="col-md-4"><label class="form-label">Hostel Name</label><input id="selfHostelName" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Distance from Residence (km)</label><input id="selfDistance" type="number" min="0" step="0.1" class="form-control"></div>
+        </div>
+      </div>
+
+      <div class="card p-3 form-section">
+        <h5>2. Parent & Family Information</h5>
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Father Name</label><input id="selfFatherName" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Father Occupation</label><input id="selfFatherOccupation" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Father Income Range</label><input id="selfFatherIncome" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Father Mobile</label><input id="selfFatherMobile" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Mother Name</label><input id="selfMotherName" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Mother Occupation</label><input id="selfMotherOccupation" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Mother Income Range</label><input id="selfMotherIncome" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Mother Mobile</label><input id="selfMotherMobile" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Guardian</label><input id="selfGuardian" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Emergency Contact</label><input id="selfEmergency" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">First-generation Graduate</label><select id="selfFirstGen" class="form-select"><option>No</option><option>Yes</option></select></div>
+          <div class="col-md-4"><label class="form-label">Scholarship Received</label><select id="selfScholarship" class="form-select"><option>No</option><option>Yes</option></select></div>
+          <div class="col-md-4"><label class="form-label">Financial Guidance Required</label><select id="selfFinancialGuidance" class="form-select"><option>No</option><option>Yes</option></select></div>
+        </div>
+      </div>
+
+      <div class="card p-3 form-section">
+        <h5>3. Technical & Professional Information</h5>
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Technical Skills</label><input id="selfTechnicalSkills" class="form-control" placeholder="Python, Java, SQL"></div>
+          <div class="col-md-6"><label class="form-label">Preferred Technical Domain</label><input id="selfPreferredDomain" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Area of Interest</label><input id="selfAreaInterest" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Certifications</label><input id="selfCertifications" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Projects (one per line: Project Name | GitHub Link)</label><textarea id="selfProjects" class="form-control" rows="3"></textarea></div>
+          <div class="col-12"><label class="form-label">Hackathons / Coding Contests (comma separated)</label><input id="selfHackathons" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Internship Experience</label><textarea id="selfInternship" class="form-control"></textarea></div>
+          <div class="col-md-3"><label class="form-label">GitHub</label><input id="selfGithub" type="url" class="form-control"></div>
+          <div class="col-md-3"><label class="form-label">LinkedIn</label><input id="selfLinkedin" type="url" class="form-control"></div>
+          <div class="col-md-3"><label class="form-label">HackerRank</label><input id="selfHackerrank" type="url" class="form-control"></div>
+          <div class="col-md-3"><label class="form-label">HackerEarth</label><input id="selfHackerearth" type="url" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Communication Level</label><select id="selfCommunicationLevel" class="form-select"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+          <div class="col-md-6"><label class="form-label">Aptitude Level</label><select id="selfAptitudeLevel" class="form-select"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>
+        </div>
+      </div>
+
+      <div class="card p-3 form-section">
+        <h5>4. Strengths, Improvement & Goals</h5>
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Academic Strengths</label><textarea id="selfAcademicStrengths" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Technical Strengths</label><textarea id="selfTechnicalStrengths" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Communication Strengths</label><textarea id="selfCommunicationStrengths" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Leadership / Teamwork</label><textarea id="selfLeadership" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Areas Requiring Improvement</label><textarea id="selfImprovements" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Subjects Requiring Support</label><input id="selfSubjectsSupport" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Technical Skills to Develop</label><input id="selfSkillsDevelop" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Communication / Aptitude to Improve</label><input id="selfCommImprove" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Support Expected from Mentor</label><textarea id="selfMentorSupport" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Short-term Goal</label><input id="selfShortGoal" class="form-control"></div>
+          <div class="col-md-6"><label class="form-label">Long-term Goal</label><input id="selfLongGoal" class="form-control"></div>
+        </div>
+      </div>
+
+      <div class="card p-3 form-section">
+        <h5>5. Career Goal</h5>
+        <div class="mb-3"><label class="form-label">Primary Career Goal</label><select id="selfCareerGoal" class="form-select"><option>Placement</option><option>Higher Studies</option><option>Entrepreneurship</option></select></div>
+        <div id="selfPlacementFields"><div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Preferred Job Role</label><input id="selfPlacementRole" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Technical Domain</label><input id="selfPlacementDomain" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Company Type</label><select id="selfPlacementCompanyType" class="form-select"><option value="">Select</option><option>Product</option><option>Service</option><option>Core</option><option>Start-up</option></select></div>
+          <div class="col-md-4"><label class="form-label">Expected Salary Range</label><input id="selfPlacementSalary" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Preferred Location</label><input id="selfPlacementLocation" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Target Companies</label><input id="selfPlacementCompanies" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Training / Skills Support Needed</label><textarea id="selfPlacementSupport" class="form-control"></textarea></div>
+        </div></div>
+        <div id="selfHigherFields" class="d-none"><div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Preferred Programme</label><input id="selfHigherProgramme" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Specialization</label><input id="selfHigherSpecialization" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Preferred Country</label><input id="selfHigherCountry" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Target Institutions</label><input id="selfHigherInstitutions" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Planned Exams</label><input id="selfHigherExams" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Expected Admission Year</label><input id="selfHigherYear" type="number" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Guidance Required</label><textarea id="selfHigherGuidance" class="form-control"></textarea></div>
+        </div></div>
+        <div id="selfEntreFields" class="d-none"><div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Business Idea</label><textarea id="selfEntreIdea" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Problem Addressed</label><textarea id="selfEntreProblem" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Proposed Solution</label><textarea id="selfEntreSolution" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Target Customers</label><textarea id="selfEntreCustomers" class="form-control"></textarea></div>
+          <div class="col-md-4"><label class="form-label">Current Stage</label><select id="selfEntreStage" class="form-select"><option value="">Select</option><option>Idea</option><option>Prototype</option><option>MVP</option><option>Revenue</option></select></div>
+          <div class="col-md-4"><label class="form-label">Support Needed</label><input id="selfEntreSupport" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Expected Launch Year</label><input id="selfEntreYear" type="number" class="form-control"></div>
+        </div></div>
+      </div>
+
+      <div class="card p-3 form-section">
+        <h5>6. Change Password</h5>
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Current Password</label><input id="selfCurrentPassword" type="password" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">New Password</label><input id="selfNewPassword" type="password" minlength="6" class="form-control"></div>
+          <div class="col-md-4 d-flex align-items-end"><button type="button" class="btn btn-outline-dark w-100" id="changePasswordBtn">Change Password</button></div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mb-5">
+        <button class="btn btn-success btn-lg" type="submit">Save My Profile</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- APPLICATION -->
+<div id="appScreen" class="d-none">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Student Profiling System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="#" id="navDashboard">Mentor Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" id="navStudents">Students Directory</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" id="navAdd">Add Student Profile</a></li>
+      </ul>
+      <span class="navbar-text me-3" id="loggedInUser"></span>
+      <button class="btn btn-outline-light btn-sm" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid px-3 px-lg-4 my-4">
+
+<!-- DASHBOARD -->
+<section id="dashboardSection">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h3 class="section-title mb-1">Class Academic & Career Analytics</h3>
+      <div class="small-muted">Mentor-only insights from verified student profile data</div>
+    </div>
+    <button class="btn btn-outline-primary" id="refreshDashboard">Refresh</button>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3"><div class="card metric-card p-3">
+      <div class="small-muted">Total Students</div><h3 id="dashTotal">0</h3>
+    </div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card metric-card p-3">
+      <div class="small-muted">Average / Highest / Lowest CGPA</div><h5 id="dashCgpa">0 / 0 / 0</h5>
+    </div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card metric-card p-3">
+      <div class="small-muted">Pending / Cleared Arrears</div><h5 id="dashArrears">0 / 0</h5>
+    </div></div>
+    <div class="col-sm-6 col-lg-3"><div class="card metric-card p-3">
+      <div class="small-muted">Hostellers / Day Scholars</div><h5 id="dashCategory">0 / 0</h5>
+    </div></div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-6">
+      <div class="card p-3 h-100">
+        <h5>Academic Momentum</h5>
+        <div class="row text-center">
+          <div class="col-4"><h4 id="dashImproving">0</h4><span class="small-muted">Continuous improvement</span></div>
+          <div class="col-4"><h4 id="dashDeclining">0</h4><span class="small-muted">Continuous decline</span></div>
+          <div class="col-4"><h4 id="dashRemedial">0</h4><span class="small-muted">Remedial support</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card p-3 h-100">
+        <h5>Career Goals</h5>
+        <div class="row text-center">
+          <div class="col-4"><h4 id="dashPlacement">0</h4><span class="small-muted">Placement</span></div>
+          <div class="col-4"><h4 id="dashHigher">0</h4><span class="small-muted">Higher Studies</span></div>
+          <div class="col-4"><h4 id="dashEntre">0</h4><span class="small-muted">Entrepreneurship</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Semester-wise Average SGPA</h5>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead><tr><th>Semester</th><th>Average SGPA</th></tr></thead>
+            <tbody id="dashSemesterSgpa"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Subjects with Highest Arrears</h5>
+        <div class="dashboard-list" id="dashSubjects"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Common Student Strengths</h5>
+        <div id="dashStrengths"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Common Areas Requiring Improvement</h5>
+        <div id="dashImprovements"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Career-goal-wise Skill Gaps</h5>
+        <div id="dashSkillGaps"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Students Requiring Mentor Intervention</h5>
+        <div class="dashboard-list" id="dashMentor"></div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card p-3">
+        <h5>Students Missing Certifications / Projects / GitHub / LinkedIn</h5>
+        <div class="dashboard-list" id="dashMissing"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Students with Improving SGPA</h5>
+        <div class="dashboard-list" id="dashImprovingList"></div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <div class="card p-3">
+        <h5>Students with Declining SGPA</h5>
+        <div class="dashboard-list" id="dashDecliningList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDENTS DIRECTORY -->
+<section id="studentsSection" class="d-none">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="section-title">Students Directory</h3>
+    <button class="btn btn-primary" id="addStudentFromDirectory">Add Student</button>
+  </div>
+
+  <div class="card p-3 mb-3">
+    <div class="row g-2">
+      <div class="col-md-3">
+        <label class="form-label">Search name/register no.</label>
+        <input id="filterSearch" class="form-control" placeholder="Search...">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Department</label>
+        <input id="filterDepartment" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Section</label>
+        <input id="filterSection" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Category</label>
+        <select id="filterCategory" class="form-select">
+          <option value="">All</option>
+          <option>Hosteller</option>
+          <option>Day Scholar</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Career Goal</label>
+        <select id="filterCareer" class="form-select">
+          <option value="">All</option>
+          <option>Placement</option>
+          <option>Higher Studies</option>
+          <option>Entrepreneurship</option>
+        </select>
+      </div>
+      <div class="col-md-1">
+        <label class="form-label">Arrear</label>
+        <select id="filterArrear" class="form-select">
+          <option value="">All</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Min CGPA</label>
+        <input id="filterMinCgpa" type="number" step=".01" min="0" max="10" class="form-control">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Max CGPA</label>
+        <input id="filterMaxCgpa" type="number" step=".01" min="0" max="10" class="form-control">
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-outline-primary w-100" id="applyFilters">Apply Filters</button>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-outline-secondary w-100" id="clearFilters">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card p-3">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Register No.</th><th>Name</th><th>Department</th><th>Section</th>
+            <th>Category</th><th>Career Goal</th><th>Pending Arrears</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section id="formSection" class="d-none">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 id="formTitle" class="section-title">Create Student Profile</h3>
+    <button class="btn btn-outline-secondary" id="cancelForm">Back</button>
+  </div>
+
+  <form id="studentForm" novalidate>
+
+    <!-- PERSONAL -->
+    <div class="card p-3 form-section">
+      <h5>1. Personal Details</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><label class="form-label required">Register Number</label><input id="registerNumber" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Student Login Password</label><input id="studentPassword" type="password" minlength="6" class="form-control" placeholder="Default: Student@123"><div class="form-text">Student logs in with register number + this password.</div></div>
+        <div class="col-md-5"><label class="form-label required">Student Name</label><input id="studentName" class="form-control" required></div>
+        <div class="col-md-2"><label class="form-label required">Date of Birth</label><input id="dob" type="date" class="form-control" required></div>
+        <div class="col-md-2"><label class="form-label required">Gender</label><input id="gender" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label required">Department</label><input id="department" class="form-control" required></div>
+        <div class="col-md-2"><label class="form-label required">Section</label><input id="section" class="form-control" required></div>
+        <div class="col-md-4"><label class="form-label required">Institutional Email</label><input id="institutionalEmail" type="email" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Personal Email</label><input id="personalEmail" type="email" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label required">Mobile Number</label><input id="mobileNumber" class="form-control" required></div>
+        <div class="col-md-6"><label class="form-label required">Residential Address</label><textarea id="residentialAddress" class="form-control" required></textarea></div>
+        <div class="col-md-3"><label class="form-label required">Student Category</label>
+          <select id="studentCategory" class="form-select" required>
+            <option>Hosteller</option><option>Day Scholar</option>
+          </select>
+        </div>
+        <div class="col-md-3" id="hostelField"><label class="form-label">Hostel Name</label><input id="hostelName" class="form-control"></div>
+        <div class="col-md-3 d-none" id="distanceField"><label class="form-label">Distance from Residence (km)</label><input id="distanceFromResidence" type="number" step=".1" min="0" class="form-control"></div>
+      </div>
+    </div>
+
+    <!-- FAMILY -->
+    <div class="card p-3 form-section">
+      <h5>2. Parent & Family Details</h5>
+      <div class="row g-3">
+        <div class="col-md-3"><label class="form-label required">Father's Name</label><input id="fatherName" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Father's Occupation</label><input id="fatherOccupation" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">Father's Income Range</label><input id="fatherIncomeRange" class="form-control" placeholder="e.g. Below 2 Lakhs"></div>
+        <div class="col-md-3"><label class="form-label">Father's Mobile</label><input id="fatherMobile" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label required">Mother's Name</label><input id="motherName" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Mother's Occupation</label><input id="motherOccupation" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">Mother's Income Range</label><input id="motherIncomeRange" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">Mother's Mobile</label><input id="motherMobile" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">Parent / Guardian Name</label><input id="guardianName" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label required">Emergency Contact</label><input id="emergencyContact" class="form-control" required></div>
+        <div class="col-md-2"><label class="form-label">First-generation Graduate</label><select id="firstGenerationGraduate" class="form-select"><option>No</option><option>Yes</option></select></div>
+        <div class="col-md-2"><label class="form-label">Scholarship Received</label><select id="scholarshipReceived" class="form-select"><option>No</option><option>Yes</option></select></div>
+        <div class="col-md-2"><label class="form-label">Financial Guidance</label><select id="financialGuidanceRequired" class="form-select"><option>No</option><option>Yes</option></select></div>
+      </div>
+    </div>
+
+    <!-- SEMESTERS -->
+    <div class="card p-3 form-section">
+      <div class="d-flex justify-content-between">
+        <h5>3. Semester-wise Academic Details</h5>
+        <button type="button" class="btn btn-sm btn-outline-primary" id="addSemesterBtn">+ Add Semester</button>
+      </div>
+      <div class="small-muted mb-2">Add each completed semester as results become available.</div>
+      <div id="semestersContainer"></div>
+    </div>
+
+    <!-- ARREARS -->
+    <div class="card p-3 form-section">
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5>4. Arrear Details</h5>
+          <div class="small-muted">When a semester has arrears, add the corresponding detailed record(s).</div>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-danger" id="addArrearBtn">+ Add Arrear</button>
+      </div>
+      <div id="arrearsContainer"></div>
+    </div>
+
+    <!-- TECHNICAL -->
+    <div class="card p-3 form-section">
+      <h5>5. Technical & Professional Profile</h5>
+      <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Programming Languages / Technical Skills</label><input id="technicalSkills" class="form-control" placeholder="Python, Java, SQL"></div>
+        <div class="col-md-6"><label class="form-label">Area of Interest</label><input id="areaOfInterest" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Preferred Technical Domain</label><input id="preferredTechnicalDomain" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Certifications Completed</label><input id="certifications" class="form-control" placeholder="Certification 1, Certification 2"></div>
+        <div class="col-12">
+          <label class="form-label">Projects Completed</label>
+          <div id="projectsContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="addProjectBtn">+ Add Project</button>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Hackathons / Coding Contests</label>
+          <div id="hackathonsContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-secondary" id="addHackathonBtn">+ Add Hackathon / Contest</button>
+        </div>
+        <div class="col-12"><label class="form-label">Internship Experience</label><textarea id="internshipExperience" class="form-control"></textarea></div>
+        <div class="col-md-3"><label class="form-label">GitHub</label><input id="githubProfile" type="url" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">LinkedIn</label><input id="linkedinProfile" type="url" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">HackerRank</label><input id="hackerrankProfile" type="url" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">HackerEarth</label><input id="hackerearthProfile" type="url" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Communication Skill Level</label><select id="communicationSkillLevel" class="form-select"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div>
+        <div class="col-md-6"><label class="form-label">Aptitude Skill Level</label><select id="aptitudeSkillLevel" class="form-select"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS -->
+    <div class="card p-3 form-section">
+      <h5>6. Strength & Improvement Analysis</h5>
+      <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Academic Strengths</label><textarea id="academicStrengths" class="form-control" placeholder="e.g. Mathematics, consistent SGPA"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Technical Strengths</label><textarea id="technicalStrengths" class="form-control"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Communication Strengths</label><textarea id="communicationStrengths" class="form-control"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Leadership Qualities / Teamwork</label><textarea id="leadershipAndTeamwork" class="form-control"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Areas Requiring Improvement</label><textarea id="areasRequiringImprovement" class="form-control"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Subjects Requiring Additional Support</label><input id="subjectsRequiringSupport" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Technical Skills to be Developed</label><input id="skillsToBeDeveloped" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Communication / Aptitude Skills to Improve</label><input id="communicationAptitudeToImprove" class="form-control"></div>
+        <div class="col-12"><label class="form-label">Support Expected from Mentor</label><textarea id="mentorSupportExpected" class="form-control"></textarea></div>
+        <div class="col-md-6"><label class="form-label">Short-term Goal</label><input id="shortTermGoal" class="form-control"></div>
+        <div class="col-md-6"><label class="form-label">Long-term Goal</label><input id="longTermGoal" class="form-control"></div>
+      </div>
+    </div>
+
+    <!-- CAREER -->
+    <div class="card p-3 form-section">
+      <h5>7. Final Career Goal</h5>
+      <div class="mb-3">
+        <label class="form-label required">Primary Career Goal</label>
+        <select id="careerGoal" class="form-select" required>
+          <option>Placement</option>
+          <option>Higher Studies</option>
+          <option>Entrepreneurship</option>
+        </select>
+      </div>
+
+      <div id="placementFields">
+        <h6>Placement</h6>
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Preferred Job Role</label><input id="placementRole" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Technical Domain</label><input id="placementDomain" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Company Type</label><select id="placementCompanyType" class="form-select"><option value="">Select</option><option>Product</option><option>Service</option><option>Core</option><option>Start-up</option></select></div>
+          <div class="col-md-4"><label class="form-label">Expected Salary Range</label><input id="placementSalary" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Preferred Location</label><input id="placementLocation" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Target Companies</label><input id="placementCompanies" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Training / Skills Support Needed</label><textarea id="placementTrainingSupport" class="form-control"></textarea></div>
+        </div>
+      </div>
+
+      <div id="higherFields" class="d-none">
+        <h6>Higher Studies</h6>
+        <div class="row g-3">
+          <div class="col-md-4"><label class="form-label">Preferred Programme</label><input id="higherProgramme" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Specialization</label><input id="higherSpecialization" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Preferred Country</label><input id="higherCountry" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Target Institutions</label><input id="higherInstitutions" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Planned Examinations</label><input id="higherExams" class="form-control" placeholder="GATE, GRE, IELTS"></div>
+          <div class="col-md-4"><label class="form-label">Expected Admission Year</label><input id="higherAdmissionYear" type="number" class="form-control"></div>
+          <div class="col-12"><label class="form-label">Guidance Required</label><textarea id="higherGuidance" class="form-control"></textarea></div>
+        </div>
+      </div>
+
+      <div id="entrepreneurshipFields" class="d-none">
+        <h6>Entrepreneurship</h6>
+        <div class="row g-3">
+          <div class="col-md-6"><label class="form-label">Business / Start-up Idea</label><textarea id="startupIdea" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Problem Addressed</label><textarea id="startupProblem" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Proposed Solution</label><textarea id="startupSolution" class="form-control"></textarea></div>
+          <div class="col-md-6"><label class="form-label">Target Customers</label><textarea id="startupCustomers" class="form-control"></textarea></div>
+          <div class="col-md-4"><label class="form-label">Current Stage</label><select id="startupStage" class="form-select"><option value="">Select</option><option>Idea</option><option>Prototype</option><option>MVP</option><option>Revenue</option></select></div>
+          <div class="col-md-4"><label class="form-label">Expected Launch Year</label><input id="startupLaunchYear" type="number" class="form-control"></div>
+          <div class="col-md-4"><label class="form-label">Team / Technology / Funding / Incubation Support</label><input id="startupSupport" class="form-control"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="formAlert" class="alert d-none"></div>
+    <div class="d-flex gap-2 mb-5">
+      <button class="btn btn-success btn-lg" type="submit">Save Profile</button>
+      <button class="btn btn-secondary btn-lg" type="button" id="cancelFormBottom">Cancel</button>
+    </div>
+  </form>
+</section>
+
+</div>
+</div>
+
+<!-- VIEW MODAL -->
+<div class="modal fade" id="studentModal" tabindex="-1">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="studentModalTitle">Student Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="studentModalBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/formValidation.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
